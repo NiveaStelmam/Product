@@ -73,7 +73,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productRepository.save(productModel));
     }
 
-    @Operation(summary = "Delete", description = "Método para excluir um produto", tags ="Products") // swagger
+    @Operation(summary = "Deletar", description = "Método que deleta um produto", tags ="Products") // swagger
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value="id") UUID id){
         Optional<ProductModel> productO = productRepository.findById(id);
