@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Configuration;
 public class SwaggerConfig {
     @Bean
     public OpenAPI customAPI(){
-        return new OpenAPI().info(new Info().title("Sistema Gerenciador de Tarefas API").version("1.0.0")
+        return new OpenAPI().info(new Info().title("Products API").version("1.0.0")
                 .license(new License().name("Licença do Sistema"))
+                // Endereço padrão Swagger: http://localhost:8080/swagger-ui/index.html
         );
     }
 }
