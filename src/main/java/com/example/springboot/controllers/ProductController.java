@@ -5,6 +5,7 @@ import com.example.springboot.dtos.ProductRecordDto;
 import com.example.springboot.models.ProductModel;
 import com.example.springboot.repositories.ProductRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class ProductController {
         this.productRepository = productRepository;
     }
 
-    //@Operation(summary = "Cadastrar", description = "Método que cadastra um novo produto", tags ="Products") // swagger
+    @Operation(summary = "Cadastrar", description = "Método que cadastra um novo produto", tags ="Products") // swagger
     @PostMapping("/products")
     public ResponseEntity<ProductModel> saveProduct(@RequestBody @Valid ProductRecordDto productRecordDto){
         var productModel = new ProductModel();
@@ -36,7 +37,7 @@ public class ProductController {
 
     }
 
-    //@Operation(summary = "Listar Todos", description = "Método que lista todos os produtos", tags ="Products") // swagger
+    @Operation(summary = "Listar Todos", description = "Método que lista todos os produtos", tags ="Products") // swagger
     @GetMapping("/products")
     public ResponseEntity<List<ProductModel>> getAllProducts(){
        List<ProductModel> productsList = productRepository.findAll();
@@ -49,7 +50,7 @@ public class ProductController {
        return ResponseEntity.status(HttpStatus.OK).body(productsList);
     }
 
-    //@Operation(summary = "Listar produto por ID", description = "Método que lista um produto baseado em seu ID", tags ="Products") // swagger
+    @Operation(summary = "Listar produto por ID", description = "Método que lista um produto baseado em seu ID", tags ="Products") // swagger
     @GetMapping("/products/{id}")
     public ResponseEntity<Object> getOneProduct (@PathVariable (value="id") UUID id){
         Optional<ProductModel> productO = productRepository.findById(id);
@@ -60,7 +61,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productO.get());
     }
 
-    //@Operation(summary = "Atualizar", description = "Método para atualizar um produto", tags ="Products") // swagger
+    @Operation(summary = "Atualizar", description = "Método para atualizar um produto", tags ="Products") // swagger
     @PutMapping("/products/{id}")
     public ResponseEntity<Object> updateProduct(@PathVariable(value="id") UUID id, @RequestBody @Valid ProductRecordDto productRecordDto){
         Optional<ProductModel> productO = productRepository.findById(id); // busca o produto no banco de dados
@@ -72,7 +73,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productRepository.save(productModel));
     }
 
-    //@Operation(summary = "Delete", description = "Método para excluir um produto", tags ="Products") // swagger
+    @Operation(summary = "Delete", description = "Método para excluir um produto", tags ="Products") // swagger
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value="id") UUID id){
         Optional<ProductModel> productO = productRepository.findById(id);
