@@ -8,6 +8,7 @@ import com.example.springboot.repositories.ProductRepository;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import org.springframework.beans.BeanUtils;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,12 +54,14 @@ public class ProductController {
     @Operation(summary = "Listar produto por ID", description = "Método que lista um produto baseado em seu ID", tags ="Products") // swagger
     @GetMapping("/products/{id}")
     public ResponseEntity<Object> getOneProduct (@PathVariable (value="id") UUID id){
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Custom-Header", "teste"); // testando uma requisição com head personalizado
         Optional<ProductModel> productO = productRepository.findById(id);
         if(productO.isEmpty()) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Product not found.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).headers(headers).body("Product not found.");
         }
         productO.get().add(linkTo(methodOn(ProductController.class).getAllProducts()).withSelfRel());
-        return ResponseEntity.status(HttpStatus.OK).body(productO.get());
+        return ResponseEntity.status(HttpStatus.OK).headers(headers).body(productO.get()); // .headers(headers)
     }
 
     @Operation(summary = "Atualizar", description = "Método para atualizar um produto", tags ="Products") // swagger
@@ -73,7 +76,7 @@ public class ProductController {
         return ResponseEntity.status(HttpStatus.OK).body(productRepository.save(productModel));
     }
 
-    @Operation(summary = "Deletar", description = "Método que deleta um produto", tags ="Products") // swagger
+    @Operation(summary = "Deletar", description = "Método que deleta  um produto", tags ="Products") // swagger
     @DeleteMapping("/products/{id}")
     public ResponseEntity<Object> deleteProduct(@PathVariable(value="id") UUID id){
         Optional<ProductModel> productO = productRepository.findById(id);
